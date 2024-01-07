@@ -134,14 +134,15 @@ function shuffleAndShow() {
         const authors = new Set(originalFlashcards.map(flashcard => flashcard[3]));
         const questionTypes = new Set(originalFlashcards.map(flashcard => flashcard[2]));
 
-        //populateDropdown(authorFilter, authors);        
+        //populateDropdown(authorFilter, authors); 
+        console.log('Authors', authors);       
         authors.forEach(function (author) {
             var option = document.createElement('option');
             option.value = author;
             option.text = author;
             authorFilter.add(option);
         });
-        authorFilter.setAttribute('size', allAuthors.length); // Set the size attribute to show all options
+        authorFilter.setAttribute('size', authors.length); // Set the size attribute to show all options
         authorFilter.selectedIndex = -1; // Clear any previous selection (if needed)
         for (var i = 0; i < authorFilter.options.length; i++) {
             authorFilter.options[i].selected = true; // Select all options
