@@ -162,10 +162,12 @@ function shuffleAndShow() {
     function applyFiltersAndShowQuestion() {
         console.log("Applying filters...");
         const authorFilterValue = authorFilter.value;
+        var selectedAuthors = Array.from(authorFilter.selectedOptions).map(option => option.value);
         const questionTypeFilterValue = questionTypeFilter.value;
 
         const filteredFlashcards = originalFlashcards.filter(flashcard => {
-            const authorMatch = authorFilterValue === "all" || flashcard[3] === authorFilterValue;
+            //const authorMatch = authorFilterValue === "all" || flashcard[3] === authorFilterValue;
+            const authorMatch = selectedAuthors.includes(flashcard[3]);
             const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
 
             return authorMatch && questionTypeMatch;
