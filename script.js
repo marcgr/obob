@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
     authorFilter.addEventListener("change", applyFiltersAndShowQuestion);
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
 
+    function showLoading() {
+        document.getElementById("loading-container").style.display = "flex";
+     }
+     
+     function hideLoading() {
+        document.getElementById("loading-container").style.display = "none";
+     }
+     
     function readText() {
 		const speechSynthesis = window.speechSynthesis;
 		const utterance = new SpeechSynthesisUtterance();
@@ -39,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 
-
+    showLoading();
 
     loadFlashcardsFromGoogleSheet();
 	
@@ -58,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     flashcards = [...originalFlashcards]; // Copy the shuffled data
                     populateFilterOptions();
                     applyFiltersAndShowQuestion();
+                    hideLoading();
                 }
             });
         })
