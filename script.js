@@ -163,6 +163,7 @@ function shuffleAndShow() {
         console.log("Applying filters...");
         const authorFilterValue = authorFilter.value;
         var selectedAuthors = Array.from(authorFilter.selectedOptions).map(option => option.value);
+        console.log('selectedAuthors', selectedAuthors);
         const questionTypeFilterValue = questionTypeFilter.value;
 
         const filteredFlashcards = originalFlashcards.filter(flashcard => {
