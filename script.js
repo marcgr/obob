@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: false,
                 skipEmptyLines: true,
                 complete: function (results) {
+                    console.log('All results',results);
                     originalFlashcards = results.data;
                     shuffleArray(originalFlashcards); // Shuffle once during the initial load
                     flashcards = [...originalFlashcards]; // Copy the shuffled data
