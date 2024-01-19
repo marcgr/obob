@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Papa.parse(data, {
                 delimiter: "\t",
                 header: false,
-                skipEmptyLines: false,
+                skipEmptyLines: true,
                 complete: function (results) {
                     console.log('All results',results);
                     originalFlashcards = results.data;
