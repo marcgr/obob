@@ -152,14 +152,18 @@ document.addEventListener("DOMContentLoaded", function () {
     
         populateDropdown(questionTypeFilter, questionTypes);
     
-        const bookNamesArray = Array.from(new Set(originalFlashcards.map(flashcard => flashcard[4]))).filter(name => name.trim() !== "");
-        populateDropdown(bookNameFilter, bookNamesArray);
+        // Convert Set to Array and filter out empty strings
+        const bookNamesArray = Array.from(new Set(originalFlashcards.map(flashcard => flashcard[4])));
+        const filteredBookNamesArray = bookNamesArray.filter(name => name.trim() !== "");
+    
+        populateDropdown(bookNameFilter, filteredBookNamesArray);
         
         // Select all options by default in bookNameFilter
         for (var i = 0; i < bookNameFilter.options.length; i++) {
             bookNameFilter.options[i].selected = true;
         }
     }
+    
     
     
     
