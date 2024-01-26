@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let originalFlashcards = [];
     let flashcards = [];
-    let currentFlashcardIndex = 0;	
+    let currentFlashcardIndex = 0;
     let isReading = false;
 
     const authorFilter = document.getElementById("author-filter");
@@ -15,94 +15,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showLoading() {
         document.getElementById("loading-container").style.display = "flex";
-     }
-     
-     function hideLoading() {
+    }
+
+    function hideLoading() {
         document.getElementById("loading-container").style.display = "none";
-     }
-     
+    }
+
     function readText() {
-		const speechSynthesis = window.speechSynthesis;
-		const utterance = new SpeechSynthesisUtterance();
+        const speechSynthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance();
 
-		const questionElement = document.getElementById("question");
-		const answerElement = document.getElementById("answer");
-		const showAnswerButton = document.getElementById("show-answer");
-		const soundCheckbox = document.getElementById("sound-checkbox");
+        const questionElement = document.getElementById("question");
+        const answerElement = document.getElementById("answer");
+        const showAnswerButton = document.getElementById("show-answer");
+        const soundCheckbox = document.getElementById("sound-checkbox");
 
-		const isQuestionVisible = questionElement.style.display === "block";
-		const isAnswerVisible = answerElement.style.display === "block";
+        const isQuestionVisible = questionElement.style.display === "block";
+        const isAnswerVisible = answerElement.style.display === "block";
 
-		if (soundCheckbox.checked) {
-			if (isQuestionVisible) {
-				utterance.text = questionElement.innerText;
-			} else if (isAnswerVisible) {
-				utterance.text = answerElement.innerText;
-			} else if (showAnswerButton.style.display === "block") {
-				utterance.text = questionElement.innerText;
-			}
+        if (soundCheckbox.checked) {
+            if (isQuestionVisible) {
+                utterance.text = questionElement.innerText;
+            } else if (isAnswerVisible) {
+                utterance.text = answerElement.innerText;
+            } else if (showAnswerButton.style.display === "block") {
+                utterance.text = questionElement.innerText;
+            }
 
-			const voices = speechSynthesis.getVoices();
-			utterance.voice = voices.find(voice => voice.name === 'Google UK English Male');
+            const voices = speechSynthesis.getVoices();
+            utterance.voice = voices.find(voice => voice.name === 'Google UK English Male');
 
-			speechSynthesis.speak(utterance);
-		}
-	}
+            speechSynthesis.speak(utterance);
+        }
+    }
 
 
     showLoading();
 
     loadFlashcardsFromGoogleSheet();
-	
-	function loadFlashcardsFromGoogleSheet() {
-    const googleSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKab-hn-TLPPv9tcF7ADiiYVjTgF-SQ_LkxfNhLAU1fDnH2L325T3LVsSsV733JQS14bAwb_RZTxj-/pub?gid=1180178799&single=true&output=tsv';
-    fetch(googleSheetURL)
-        .then(response => response.text())
-        .then(data => {
-            Papa.parse(data, {
-                delimiter: "\t",
-                header: false,
-                skipEmptyLines: true,
-                complete: function (results) {
-                    console.log('All results',results);
-                    originalFlashcards = results.data;
-                    shuffleArray(originalFlashcards); // Shuffle once during the initial load
-                    flashcards = [...originalFlashcards]; // Copy the shuffled data
-                    populateFilterOptions();
-                    applyFiltersAndShowQuestion();
-                    hideLoading();
-                }
-            });
-        })
-        .catch(error => console.error('Error loading Google Sheet data:', error));
-}
+
+    function loadFlashcardsFromGoogleSheet() {
+        const googleSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKab-hn-TLPPv9tcF7ADiiYVjTgF-SQ_LkxfNhLAU1fDnH2L325T3LVsSsV733JQS14bAwb_RZTxj-/pub?gid=1180178799&single=true&output=tsv';
+        fetch(googleSheetURL)
+            .then(response => response.text())
+            .then(data => {
+                Papa.parse(data, {
+                    delimiter: "\t",
+                    header: false,
+                    skipEmptyLines: true,
+                    complete: function (results) {
+                        console.log('All results', results);
+                        originalFlashcards = results.data;
+                        shuffleArray(originalFlashcards); // Shuffle once during the initial load
+                        flashcards = [...originalFlashcards]; // Copy the shuffled data
+                        populateFilterOptions();
+                        applyFiltersAndShowQuestion();
+                        hideLoading();
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading Google Sheet data:', error));
+    }
 
 
     function loadFlashcardsFromCSV() {
-	
-		
-		
-		
-    fetch('OBOB_2024.tsv')
-        .then(response => response.text())
-        .then(data => {
-            Papa.parse(data, {
-                delimiter: "\t",
-                header: false,
-                skipEmptyLines: true,
-                complete: function (results) {
-                    originalFlashcards = results.data;
-                    shuffleArray(originalFlashcards); // Shuffle once during the initial load
-                    flashcards = [...originalFlashcards]; // Copy the shuffled data
-                    populateFilterOptions();
-                    applyFiltersAndShowQuestion();
-                }
-            });
-        })
-        .catch(error => console.error('Error loading tab-delimited file:', error));
-}
 
-function readAnswer() {
+
+
+
+        fetch('OBOB_2024.tsv')
+            .then(response => response.text())
+            .then(data => {
+                Papa.parse(data, {
+                    delimiter: "\t",
+                    header: false,
+                    skipEmptyLines: true,
+                    complete: function (results) {
+                        originalFlashcards = results.data;
+                        shuffleArray(originalFlashcards); // Shuffle once during the initial load
+                        flashcards = [...originalFlashcards]; // Copy the shuffled data
+                        populateFilterOptions();
+                        applyFiltersAndShowQuestion();
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading tab-delimited file:', error));
+    }
+
+    function readAnswer() {
         const speechSynthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance();
 
@@ -115,22 +115,22 @@ function readAnswer() {
         speechSynthesis.speak(utterance);
     }
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
-}
 
 
-function shuffleAndShow() {
-    flashcards = [...originalFlashcards]; // Copy the original data
-    console.log("Flashcards before shuffle:", flashcards);
-    shuffleArray(flashcards);
-    console.log("Flashcards after shuffle:", flashcards);
-    populateFilterOptions();
-    applyFiltersAndShowQuestion();
-}
+    function shuffleAndShow() {
+        flashcards = [...originalFlashcards]; // Copy the original data
+        console.log("Flashcards before shuffle:", flashcards);
+        shuffleArray(flashcards);
+        console.log("Flashcards after shuffle:", flashcards);
+        populateFilterOptions();
+        applyFiltersAndShowQuestion();
+    }
 
 
 
@@ -139,7 +139,7 @@ function shuffleAndShow() {
         const questionTypes = new Set(originalFlashcards.map(flashcard => flashcard[2]));
 
         //populateDropdown(authorFilter, authors); 
-        console.log('Authors', authors);       
+        console.log('Authors', authors);
         authors.forEach(function (author) {
             var option = document.createElement('option');
             option.value = author;
@@ -152,10 +152,10 @@ function shuffleAndShow() {
             authorFilter.options[i].selected = true; // Select all options
         }
         populateDropdown(questionTypeFilter, questionTypes);
-        
+
         const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4])); // Assuming book names are in the 5th column
         populateDropdown(bookNameFilter, bookNames);
-        
+
     }
 
     function populateDropdown(selectElement, options) {
@@ -173,31 +173,24 @@ function shuffleAndShow() {
         var selectedAuthors = Array.from(authorFilter.selectedOptions).map(option => option.value);
         console.log('selectedAuthors', selectedAuthors);
         const questionTypeFilterValue = questionTypeFilter.value;
+        const bookNameFilterValue = bookNameFilter.value;
 
-        const filteredFlashcards = originalFlashcards.filter(flashcard => {
-            //const authorMatch = authorFilterValue === "all" || flashcard[3] === authorFilterValue;
+        const authorFilteredFlashcards = originalFlashcards.filter(flashcard => {
             const authorMatch = selectedAuthors.includes(flashcard[3]);
             const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
-
             return authorMatch && questionTypeMatch;
         });
 
-        const bookNameFilterValue = bookNameFilter.value;
-
-        const filteredFlashcards = originalFlashcards.filter(flashcard => {
-            const authorMatch = selectedAuthors.includes(flashcard[3]);
-            const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
+        const finalFilteredFlashcards = authorFilteredFlashcards.filter(flashcard => {
             const bookNameMatch = bookNameFilterValue === "all" || flashcard[4] === bookNameFilterValue; // Assuming book names are in the 5th column
-
-            return authorMatch && questionTypeMatch && bookNameMatch;
+            return bookNameMatch;
         });
 
-        flashcards = filteredFlashcards;
+        flashcards = finalFilteredFlashcards;
         //console.log("Filtered Flashcards:", flashcards);
-		
-		// Update the filtered count
-		document.getElementById("filtered-count").innerText = flashcards.length;
 
+        // Update the filtered count
+        document.getElementById("filtered-count").innerText = flashcards.length;
 
         if (flashcards.length > 0) {
             // Check if currentFlashcardIndex is out of bounds
@@ -208,7 +201,7 @@ function shuffleAndShow() {
         } else {
             alert("No matching flashcards found!");
         }
-    }    
+    }
 
     function showQuestion() {
         const flashcard = document.getElementById("flashcard-content");
@@ -221,21 +214,21 @@ function shuffleAndShow() {
         if (currentFlashcardIndex < flashcards.length) {
             const currentFlashcard = flashcards[currentFlashcardIndex];
 
-   			const questionIndex = 0;
-			const answerIndex = 1;
-			const authorIndex = 3; // Assuming Author is in the 4th column
-			const questionTypeIndex = 2; // Assuming QuestionType is in the 3rd column
+            const questionIndex = 0;
+            const answerIndex = 1;
+            const authorIndex = 3; // Assuming Author is in the 4th column
+            const questionTypeIndex = 2; // Assuming QuestionType is in the 3rd column
 
-			// Update the displayed information
-			document.getElementById("question").innerText = `Question: ${currentFlashcard[questionIndex]}`;
-			document.getElementById("answer").innerText = `Answer: ${currentFlashcard[answerIndex]}`;
-			document.getElementById("current-author").innerText = currentFlashcard[authorIndex];
-			document.getElementById("current-question-type").innerText = currentFlashcard[questionTypeIndex];
-			document.getElementById("current-index").innerText = currentFlashcardIndex + 1; // Add 1 to display human-readable index
+            // Update the displayed information
+            document.getElementById("question").innerText = `Question: ${currentFlashcard[questionIndex]}`;
+            document.getElementById("answer").innerText = `Answer: ${currentFlashcard[answerIndex]}`;
+            document.getElementById("current-author").innerText = currentFlashcard[authorIndex];
+            document.getElementById("current-question-type").innerText = currentFlashcard[questionTypeIndex];
+            document.getElementById("current-index").innerText = currentFlashcardIndex + 1; // Add 1 to display human-readable index
 
-			// Dynamically control the visibility of the Previous button
-			const prevButton = document.getElementById("prev-button");
-			prevButton.style.display = currentFlashcardIndex > 0 ? "inline-block" : "none";
+            // Dynamically control the visibility of the Previous button
+            const prevButton = document.getElementById("prev-button");
+            prevButton.style.display = currentFlashcardIndex > 0 ? "inline-block" : "none";
 
             questionElement.innerText = `Question: ${currentFlashcard[questionIndex]}`;
             answerElement.innerText = `Answer: ${currentFlashcard[answerIndex]}`;
@@ -250,52 +243,52 @@ function shuffleAndShow() {
             }
 
             showAnswerButton.onclick = function () {
-			answerElement.style.display = "block";
-			showAnswerButton.style.display = "none";
-			nextButton.style.display = "block";
+                answerElement.style.display = "block";
+                showAnswerButton.style.display = "none";
+                nextButton.style.display = "block";
 
-			if (soundCheckbox.checked) {
-				// Read the answer only when the "Show Answer" button is clicked
-				readText();
-			}
-		};
+                if (soundCheckbox.checked) {
+                    // Read the answer only when the "Show Answer" button is clicked
+                    readText();
+                }
+            };
 
-		nextButton.onclick = function () {
-			console.log("Next button clicked. Current index:", currentFlashcardIndex);
-			currentFlashcardIndex++;			
+            nextButton.onclick = function () {
+                console.log("Next button clicked. Current index:", currentFlashcardIndex);
+                currentFlashcardIndex++;
 
-			document.getElementById("answer").style.display = "none";
-			applyFiltersAndShowQuestion();
-			nextButton.style.display = "none";
-			
-			// Check if the answer is already displayed
-			if (answerElement.style.display === "block") {
-				if (soundCheckbox.checked) {
-					// Read the answer only if it was not read before
-					readText();
-				}
-			}
-		};
-			
+                document.getElementById("answer").style.display = "none";
+                applyFiltersAndShowQuestion();
+                nextButton.style.display = "none";
+
+                // Check if the answer is already displayed
+                if (answerElement.style.display === "block") {
+                    if (soundCheckbox.checked) {
+                        // Read the answer only if it was not read before
+                        readText();
+                    }
+                }
+            };
+
 
 
         } else {
             alert("No more flashcards!");
         }
     }
-	
-	// Add event listener to the sound checkbox
-	document.getElementById("sound-checkbox").addEventListener("change", function () {
-		// Call the readText function when the checkbox state changes
-		readText();
-	});
 
-	// Add event listener for the Previous button
-	document.getElementById("prev-button").addEventListener("click", function () {
-		if (currentFlashcardIndex > 0) {
-			currentFlashcardIndex--;
-			applyFiltersAndShowQuestion();
-		}
-	});    
-    
+    // Add event listener to the sound checkbox
+    document.getElementById("sound-checkbox").addEventListener("change", function () {
+        // Call the readText function when the checkbox state changes
+        readText();
+    });
+
+    // Add event listener for the Previous button
+    document.getElementById("prev-button").addEventListener("click", function () {
+        if (currentFlashcardIndex > 0) {
+            currentFlashcardIndex--;
+            applyFiltersAndShowQuestion();
+        }
+    });
+
 });
