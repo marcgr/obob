@@ -6,9 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const authorFilter = document.getElementById("author-filter");
     const questionTypeFilter = document.getElementById("question-type-filter");
+    const bookNameFilter = document.getElementById("book-name-filter"); // Add book name filter
 
     authorFilter.addEventListener("change", applyFiltersAndShowQuestion);
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
+    bookNameFilter.addEventListener("change", applyFiltersAndShowQuestion); // Add event listener for book name filter
+
 
     function showLoading() {
         document.getElementById("loading-container").style.display = "flex";
@@ -149,6 +152,10 @@ function shuffleAndShow() {
             authorFilter.options[i].selected = true; // Select all options
         }
         populateDropdown(questionTypeFilter, questionTypes);
+        
+        const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4])); // Assuming book names are in the 5th column
+        populateDropdown(bookNameFilter, bookNames);
+        
     }
 
     function populateDropdown(selectElement, options) {
@@ -173,6 +180,16 @@ function shuffleAndShow() {
             const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
 
             return authorMatch && questionTypeMatch;
+        });
+
+        const bookNameFilterValue = bookNameFilter.value;
+
+        const filteredFlashcards = originalFlashcards.filter(flashcard => {
+            const authorMatch = selectedAuthors.includes(flashcard[3]);
+            const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
+            const bookNameMatch = bookNameFilterValue === "all" || flashcard[4] === bookNameFilterValue; // Assuming book names are in the 5th column
+
+            return authorMatch && questionTypeMatch && bookNameMatch;
         });
 
         flashcards = filteredFlashcards;
