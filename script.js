@@ -214,72 +214,63 @@ document.addEventListener("DOMContentLoaded", function () {
         const showAnswerButton = document.getElementById("show-answer");
         const soundCheckbox = document.getElementById("sound-checkbox");
         const nextButton = document.getElementById("next-button");
-
+    
         if (currentFlashcardIndex < flashcards.length) {
             const currentFlashcard = flashcards[currentFlashcardIndex];
-
+    
             const questionIndex = 0;
             const answerIndex = 1;
-            const authorIndex = 3; // Assuming Author is in the 4th column
-            const questionTypeIndex = 2; // Assuming QuestionType is in the 3rd column
-
-            // Update the displayed information
+            const authorIndex = 3;
+            const questionTypeIndex = 2;
+    
             document.getElementById("question").innerText = `Question: ${currentFlashcard[questionIndex]}`;
             document.getElementById("answer").innerText = `Answer: ${currentFlashcard[answerIndex]}`;
             document.getElementById("current-author").innerText = currentFlashcard[authorIndex];
             document.getElementById("current-question-type").innerText = currentFlashcard[questionTypeIndex];
-            document.getElementById("current-index").innerText = currentFlashcardIndex + 1; // Add 1 to display human-readable index
-
-            // Dynamically control the visibility of the Previous button
+            document.getElementById("current-index").innerText = currentFlashcardIndex + 1;
+    
             const prevButton = document.getElementById("prev-button");
             prevButton.style.display = currentFlashcardIndex > 0 ? "inline-block" : "none";
-
+    
             questionElement.innerText = `Question: ${currentFlashcard[questionIndex]}`;
             answerElement.innerText = `Answer: ${currentFlashcard[answerIndex]}`;
             flashcard.style.display = "block";
-
+    
+            // Show "Show Answer" button and hide "Next" button initially
             showAnswerButton.style.display = "block";
+            nextButton.style.display = "none";
             answerElement.style.display = "none";
             soundCheckbox.style.display = "block";
-
-            if (soundCheckbox.checked) {
-                readText(currentFlashcard[questionIndex]);
-            }
-
+    
             showAnswerButton.onclick = function () {
                 answerElement.style.display = "block";
                 showAnswerButton.style.display = "none";
                 nextButton.style.display = "block";
-
+    
                 if (soundCheckbox.checked) {
-                    // Read the answer only when the "Show Answer" button is clicked
                     readText();
                 }
             };
-
+    
             nextButton.onclick = function () {
                 console.log("Next button clicked. Current index:", currentFlashcardIndex);
                 currentFlashcardIndex++;
-
+    
                 document.getElementById("answer").style.display = "none";
                 applyFiltersAndShowQuestion();
                 nextButton.style.display = "none";
-
-                // Check if the answer is already displayed
+    
                 if (answerElement.style.display === "block") {
                     if (soundCheckbox.checked) {
-                        // Read the answer only if it was not read before
                         readText();
                     }
                 }
             };
-
-
-
         } else {
             alert("No more flashcards!");
         }
     }
+    
 
     // Add event listener to the sound checkbox
     document.getElementById("sound-checkbox").addEventListener("change", function () {
