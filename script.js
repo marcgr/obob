@@ -159,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
         populateDropdown(bookNameFilter, filteredBookNamesArray);
         
         // Select all options by default in bookNameFilter
-        for (var i = 0; i < bookNameFilter.options.length; i++) {
-            bookNameFilter.options[i].selected = true;
-        }
+        // for (var i = 0; i < bookNameFilter.options.length; i++) {
+        //     bookNameFilter.options[i].selected = true;
+        // }
     }
 
     function populateDropdown(selectElement, options) {
