@@ -137,25 +137,29 @@ document.addEventListener("DOMContentLoaded", function () {
     function populateFilterOptions() {
         const authors = new Set(originalFlashcards.map(flashcard => flashcard[3]));
         const questionTypes = new Set(originalFlashcards.map(flashcard => flashcard[2]));
-
-        //populateDropdown(authorFilter, authors); 
-        console.log('Authors', authors);
+    
         authors.forEach(function (author) {
             var option = document.createElement('option');
             option.value = author;
             option.text = author;
             authorFilter.add(option);
         });
-        authorFilter.setAttribute('size', authors.length); // Set the size attribute to show all options
-        authorFilter.selectedIndex = -1; // Clear any previous selection (if needed)
+        authorFilter.setAttribute('size', authors.length);
+        authorFilter.selectedIndex = -1;
         for (var i = 0; i < authorFilter.options.length; i++) {
-            authorFilter.options[i].selected = true; // Select all options
+            authorFilter.options[i].selected = true;
         }
+    
         populateDropdown(questionTypeFilter, questionTypes);
-
-        const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4])); // Assuming book names are in the 5th column
+    
+        const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4]))
+            .filter(name => name.trim() !== ""); // Filter out blank book names
         populateDropdown(bookNameFilter, bookNames);
-
+    
+        // Select all options by default
+        for (let i = 0; i < bookNameFilter.options.length; i++) {
+            bookNameFilter.options[i].selected = true;
+        }
     }
 
     function populateDropdown(selectElement, options) {
