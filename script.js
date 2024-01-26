@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
         // Convert Set to Array and filter out empty strings
         const bookNamesArray = Array.from(new Set(originalFlashcards.map(flashcard => flashcard[4])));
-        const filteredBookNamesArray = bookNamesArray.filter(name => name.trim() !== "");
+        const filteredBookNamesArray = bookNamesArray.filter(name => name.trim() !== "").sort();
     
         populateDropdown(bookNameFilter, filteredBookNamesArray);
         
@@ -163,10 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
             bookNameFilter.options[i].selected = true;
         }
     }
-    
-    
-    
-    
 
     function populateDropdown(selectElement, options) {
         selectElement.innerHTML = "";
