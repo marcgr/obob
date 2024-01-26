@@ -153,7 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
         populateDropdown(questionTypeFilter, questionTypes);
     
         const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4]))
-            .filter(name => name.trim() !== ""); // Filter out blank book names
+            .filter(name => name.trim() !== "") // Filter out blank book names
+            .sort(); // Sort book names alphabetically
         populateDropdown(bookNameFilter, bookNames);
     
         // Select all options by default
@@ -161,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bookNameFilter.options[i].selected = true;
         }
     }
+    
 
     function populateDropdown(selectElement, options) {
         selectElement.innerHTML = "";
