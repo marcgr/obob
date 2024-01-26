@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
             option.text = author;
             authorFilter.add(option);
         });
-        authorFilter.setAttribute('size', authors.length);
+        authorFilter.setAttribute('size', authors.size);
         authorFilter.selectedIndex = -1;
         for (var i = 0; i < authorFilter.options.length; i++) {
             authorFilter.options[i].selected = true;
@@ -152,16 +152,16 @@ document.addEventListener("DOMContentLoaded", function () {
     
         populateDropdown(questionTypeFilter, questionTypes);
     
-        const bookNames = new Set(originalFlashcards.map(flashcard => flashcard[4]))
-            .filter(name => name.trim() !== "") // Filter out blank book names
-            .sort(); // Sort book names alphabetically
-        populateDropdown(bookNameFilter, bookNames);
-    
-        // Select all options by default
-        for (let i = 0; i < bookNameFilter.options.length; i++) {
+        const bookNamesArray = Array.from(new Set(originalFlashcards.map(flashcard => flashcard[4]))).filter(name => name.trim() !== "");
+        populateDropdown(bookNameFilter, bookNamesArray);
+        
+        // Select all options by default in bookNameFilter
+        for (var i = 0; i < bookNameFilter.options.length; i++) {
             bookNameFilter.options[i].selected = true;
         }
     }
+    
+    
     
 
     function populateDropdown(selectElement, options) {
