@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         currentFlashcardIndex++;
 
         document.getElementById("answer").style.display = "none";
-        applyFiltersAndShowQuestion();
         nextButton.style.display = "none";
 
         // Check if the "Enable Sound" checkbox is checked
@@ -28,7 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // Explicitly read the question when the "Next" button is clicked
             readText();
         }
+
+        // Apply filters and show the next question
+        applyFiltersAndShowQuestion();
     };
+
 
 
     function showLoading() {
