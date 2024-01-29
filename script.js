@@ -18,12 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
     nextButton.onclick = function () {
         console.log("Next button clicked. Current index:", currentFlashcardIndex);
         currentFlashcardIndex++;
-
+        console.log("Next button clicked. Current index plus increment:", currentFlashcardIndex);
         document.getElementById("answer").style.display = "none";
         nextButton.style.display = "none";
 
         // Check if the "Enable Sound" checkbox is checked
         if (soundCheckbox.checked) {
+            console.log('sound checkbox checked, read text')
             // Explicitly read the question when the "Next" button is clicked
             readText();
         }
@@ -53,10 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const isQuestionVisible = questionElement.style.display === "block";
         const isAnswerVisible = answerElement.style.display === "block";
+        console.log('is question vis',isQuestionVisible)
 
         if (soundCheckbox.checked) {
             if (isQuestionVisible) {
-                utterance.text = questionElement.innerText;
+                console.log('utter question',questionElement.innerText)
+;                utterance.text = questionElement.innerText;
             } else if (isAnswerVisible) {
                 utterance.text = answerElement.innerText;
             } else if (showAnswerButton.style.display === "block") {
