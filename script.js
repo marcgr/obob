@@ -192,7 +192,10 @@ document.addEventListener("DOMContentLoaded", function () {
         selectElement.add(new Option("All", "all"));
 
         for (const option of options) {
-            selectElement.add(new Option(option, option));
+            // Check if the option is not an empty string
+            if (option.trim() !== "") {
+                selectElement.add(new Option(option, option));
+            }
         }
     }
 
