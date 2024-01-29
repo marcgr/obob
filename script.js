@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log('Test code: 1')
+    console.log('Test code: 2')
     let originalFlashcards = [];
     let flashcards = [];
     let currentFlashcardIndex = 0;
@@ -8,31 +8,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const authorFilter = document.getElementById("author-filter");
     const questionTypeFilter = document.getElementById("question-type-filter");
     const bookNameFilter = document.getElementById("book-name-filter"); // Add book name filter
-    const nextButton = document.getElementById("next-button");
-    const soundCheckbox = document.getElementById("sound-checkbox");
+    //const nextButton = document.getElementById("next-button");
+    //const soundCheckbox = document.getElementById("sound-checkbox");
 
     authorFilter.addEventListener("change", applyFiltersAndShowQuestion);
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
     bookNameFilter.addEventListener("change", applyFiltersAndShowQuestion); // Add event listener for book name filter
     
-    // Add event listener for the "Next" button
-    nextButton.onclick = function () {
-        console.log("Next button clicked. Current index:", currentFlashcardIndex);
-        currentFlashcardIndex++;
-        console.log("Next button clicked. Current index plus increment:", currentFlashcardIndex);
-        document.getElementById("answer").style.display = "none";
-        nextButton.style.display = "none";
+    // // Add event listener for the "Next" button
+    // nextButton.onclick = function () {
+    //     console.log("Next button clicked. Current index:", currentFlashcardIndex);
+    //     currentFlashcardIndex++;
+    //     console.log("Next button clicked. Current index plus increment:", currentFlashcardIndex);
+    //     document.getElementById("answer").style.display = "none";
+    //     nextButton.style.display = "none";
 
-        // Check if the "Enable Sound" checkbox is checked
-        if (soundCheckbox.checked) {
-            console.log('sound checkbox checked, read text')
-            // Explicitly read the question when the "Next" button is clicked
-            readText();
-        }
+    //     // Check if the "Enable Sound" checkbox is checked
+    //     if (soundCheckbox.checked) {
+    //         console.log('sound checkbox checked, read text')
+    //         // Explicitly read the question when the "Next" button is clicked
+    //         readText();
+    //     }
 
-        // Apply filters and show the next question
-        applyFiltersAndShowQuestion();
-    };
+    //     // Apply filters and show the next question
+    //     applyFiltersAndShowQuestion();
+    // };
 
 
 
@@ -281,20 +281,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             };
     
-            // nextButton.onclick = function () {
-            //     console.log("Next button clicked. Current index:", currentFlashcardIndex);
-            //     currentFlashcardIndex++;
+            nextButton.onclick = function () {
+                console.log("Next button clicked. Current index:", currentFlashcardIndex);
+                currentFlashcardIndex++;
     
-            //     document.getElementById("answer").style.display = "none";
-            //     applyFiltersAndShowQuestion();
-            //     nextButton.style.display = "none";
+                document.getElementById("answer").style.display = "none";
+                applyFiltersAndShowQuestion();
+                nextButton.style.display = "none";
     
-            //     if (answerElement.style.display === "block") {
-            //         if (soundCheckbox.checked) {
-            //             readText();
-            //         }
-            //     }
-            // };
+                if (answerElement.style.display === "block") {
+                    if (soundCheckbox.checked) {
+                        readText();
+                    }
+                }
+            };
         } else {
             alert("No more flashcards!");
         }
