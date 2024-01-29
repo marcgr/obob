@@ -8,11 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const questionTypeFilter = document.getElementById("question-type-filter");
     const bookNameFilter = document.getElementById("book-name-filter"); // Add book name filter
     const nextButton = document.getElementById("next-button");
+    const soundCheckbox = document.getElementById("sound-checkbox");
 
     authorFilter.addEventListener("change", applyFiltersAndShowQuestion);
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
     bookNameFilter.addEventListener("change", applyFiltersAndShowQuestion); // Add event listener for book name filter
-
+    
     // Add event listener for the "Next" button
     nextButton.onclick = function () {
         console.log("Next button clicked. Current index:", currentFlashcardIndex);
