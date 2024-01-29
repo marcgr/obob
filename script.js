@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const authorFilter = document.getElementById("author-filter");
     const questionTypeFilter = document.getElementById("question-type-filter");
     const bookNameFilter = document.getElementById("book-name-filter"); // Add book name filter
+    const nextButton = document.getElementById("next-button");
 
     authorFilter.addEventListener("change", applyFiltersAndShowQuestion);
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
