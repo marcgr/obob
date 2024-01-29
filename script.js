@@ -12,6 +12,22 @@ document.addEventListener("DOMContentLoaded", function () {
     questionTypeFilter.addEventListener("change", applyFiltersAndShowQuestion);
     bookNameFilter.addEventListener("change", applyFiltersAndShowQuestion); // Add event listener for book name filter
 
+    // Add event listener for the "Next" button
+    nextButton.onclick = function () {
+        console.log("Next button clicked. Current index:", currentFlashcardIndex);
+        currentFlashcardIndex++;
+
+        document.getElementById("answer").style.display = "none";
+        applyFiltersAndShowQuestion();
+        nextButton.style.display = "none";
+
+        // Check if the "Enable Sound" checkbox is checked
+        if (soundCheckbox.checked) {
+            // Explicitly read the question when the "Next" button is clicked
+            readText();
+        }
+    };
+
 
     function showLoading() {
         document.getElementById("loading-container").style.display = "flex";
