@@ -273,20 +273,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             };
     
-            nextButton.onclick = function () {
-                console.log("Next button clicked. Current index:", currentFlashcardIndex);
-                currentFlashcardIndex++;
+            // nextButton.onclick = function () {
+            //     console.log("Next button clicked. Current index:", currentFlashcardIndex);
+            //     currentFlashcardIndex++;
     
-                document.getElementById("answer").style.display = "none";
-                applyFiltersAndShowQuestion();
-                nextButton.style.display = "none";
+            //     document.getElementById("answer").style.display = "none";
+            //     applyFiltersAndShowQuestion();
+            //     nextButton.style.display = "none";
     
-                if (answerElement.style.display === "block") {
-                    if (soundCheckbox.checked) {
-                        readText();
-                    }
-                }
-            };
+            //     if (answerElement.style.display === "block") {
+            //         if (soundCheckbox.checked) {
+            //             readText();
+            //         }
+            //     }
+            // };
         } else {
             alert("No more flashcards!");
         }
