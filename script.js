@@ -52,16 +52,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const showAnswerButton = document.getElementById("show-answer");
         const soundCheckbox = document.getElementById("sound-checkbox");
 
-        const isQuestionVisible = questionElement.style.display === "block";
-        const isAnswerVisible = answerElement.style.display === "block";
-        console.log('is question vis',isQuestionVisible)
+        const isQuestionVisible = getComputedStyle(questionElement).display !== "none";
+        const isAnswerVisible = getComputedStyle(answerElement).display !== "none";
 
+        console.log('Is Question Visible????', isQuestionVisible);
         if (soundCheckbox.checked) {
-            if (isQuestionVisible) {
-                console.log('utter question',questionElement.innerText)
-;                utterance.text = questionElement.innerText;
-            } else if (isAnswerVisible) {
+            if (isAnswerVisible) {
                 utterance.text = answerElement.innerText;
+            }
+            else if (isQuestionVisible) {
+                utterance.text = questionElement.innerText;
             } else if (showAnswerButton.style.display === "block") {
                 utterance.text = questionElement.innerText;
             }
@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
             speechSynthesis.speak(utterance);
         }
     }
+
 
 
     showLoading();
