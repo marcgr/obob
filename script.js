@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log('Test code: 1')
     let originalFlashcards = [];
     let flashcards = [];
     let currentFlashcardIndex = 0;
