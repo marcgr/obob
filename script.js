@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Test Run: 5");
     let originalFlashcards = [];
     let flashcards = [];
     let currentFlashcardIndex = 0;	
@@ -169,38 +168,55 @@ function shuffleAndShow() {
     }
 
     function applyFiltersAndShowQuestion() {
-        console.log("Applying filters...");
-        const authorFilterValue = authorFilter.value;
-        var selectedAuthors = Array.from(authorFilter.selectedOptions).map(option => option.value);
-        console.log('selectedAuthors', selectedAuthors);
-        const questionTypeFilterValue = questionTypeFilter.value;
-		const bookNameFilterValue = bookNameFilter.value;
-
-        const filteredFlashcards = originalFlashcards.filter(flashcard => {
-            //const authorMatch = authorFilterValue === "all" || flashcard[3] === authorFilterValue;
-            const authorMatch = selectedAuthors.includes(flashcard[3]);
-            const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
-			const bookNameMatch = bookNameFilterValue === "all" || flashcard[4] === bookNameFilterValue; // Assuming book names are in the 5th column
-            return authorMatch && questionTypeMatch && bookNameMatch;
-        });
-
-        flashcards = filteredFlashcards;
-        //console.log("Filtered Flashcards:", flashcards);
-		
-		// Update the filtered count
-		document.getElementById("filtered-count").innerText = flashcards.length;
+    console.log("Applying filters...");
+    const searchFilterValue = document.getElementById("search-filter").value.toLowerCase(); // Get the search term and convert to lowercase for case-insensitive comparison
+    var selectedAuthors = Array.from(authorFilter.selectedOptions).map(option => option.value);
+    console.log('selectedAuthors', selectedAuthors);
+    const questionTypeFilterValue = questionTypeFilter.value;
+    const bookNameFilterValue = bookNameFilter.value;
+	const showFlaggedOnly = document.getElementById('show-flagged-only').checked;   
 
 
-        if (flashcards.length > 0) {
-            // Check if currentFlashcardIndex is out of bounds
-            if (currentFlashcardIndex >= flashcards.length) {
-                currentFlashcardIndex = 0;
-            }
-            showQuestion();
-        } else {
-            alert("No matching flashcards found!");
+    const filteredFlashcards = originalFlashcards.filter(flashcard => {
+        const authorMatch = selectedAuthors.includes(flashcard[3]);
+        const questionTypeMatch = questionTypeFilterValue === "all" || flashcard[2] === questionTypeFilterValue;
+        const bookNameMatch = bookNameFilterValue === "all" || flashcard[4] === bookNameFilterValue;
+        const searchMatch = !searchFilterValue || flashcard[0].toLowerCase().includes(searchFilterValue) || flashcard[1].toLowerCase().includes(searchFilterValue); 
+		const uniqueId = utf8ToBase64(flashcard[0] + flashcard[1]).substring(0, 224);
+        const isFlagged = JSON.parse(localStorage.getItem('flagged-' + uniqueId));
+
+        return authorMatch && questionTypeMatch && bookNameMatch && searchMatch && (!showFlaggedOnly || isFlagged);
+    });
+
+    flashcards = filteredFlashcards;
+    document.getElementById("filtered-count").innerText = flashcards.length;
+
+    if (flashcards.length > 0) {
+        if (currentFlashcardIndex >= flashcards.length) {
+            currentFlashcardIndex = 0;
         }
-    }    
+        showQuestion();
+    } else {
+        alert("No matching flashcards found!");
+    }
+}
+  
+  function utf8ToBase64(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+}
+
+  
+  function toggleFlag(uniqueId) {
+    const flagIcon = document.getElementById('flag-icon');
+    const isFlagged = flagIcon.classList.contains('flagged');
+    if (isFlagged) {
+        flagIcon.classList.remove('flagged');
+        localStorage.setItem('flagged-' + uniqueId, JSON.stringify(false));
+    } else {
+        flagIcon.classList.add('flagged');
+        localStorage.setItem('flagged-' + uniqueId, JSON.stringify(true));
+    }
+}
 
     function showQuestion() {
         const flashcard = document.getElementById("flashcard-content");
@@ -212,11 +228,25 @@ function shuffleAndShow() {
 
         if (currentFlashcardIndex < flashcards.length) {
             const currentFlashcard = flashcards[currentFlashcardIndex];
+			const uniqueId =  utf8ToBase64(currentFlashcard[0] + currentFlashcard[1]).substring(0, 224); // Generating a unique ID
+			
+			// Find the flag icon
+			const flagIcon = document.getElementById('flag-icon');
+			flagIcon.onclick = () => toggleFlag(uniqueId); // Assign toggleFlag function on click
+
+			// Check and apply flagged state
+			const isFlagged = JSON.parse(localStorage.getItem('flagged-' + uniqueId));
+			if (isFlagged) {
+				flagIcon.classList.add('flagged');
+			} else {
+				flagIcon.classList.remove('flagged');
+			}			
 
    			const questionIndex = 0;
 			const answerIndex = 1;
 			const authorIndex = 3; // Assuming Author is in the 4th column
 			const questionTypeIndex = 2; // Assuming QuestionType is in the 3rd column
+			
 
 			// Update the displayed information
 			document.getElementById("question").innerText = `Question: ${currentFlashcard[questionIndex]}`;
@@ -276,6 +306,9 @@ function shuffleAndShow() {
         }
     }
 	
+	document.getElementById('show-flagged-only').addEventListener('change', applyFiltersAndShowQuestion);
+
+	
 	// Add event listener to the sound checkbox
 	document.getElementById("sound-checkbox").addEventListener("change", function () {
 		// Call the readText function when the checkbox state changes
@@ -289,5 +322,8 @@ function shuffleAndShow() {
 			applyFiltersAndShowQuestion();
 		}
 	});    
+	
+	document.getElementById("search-filter").addEventListener("input", applyFiltersAndShowQuestion);
+
     
 });
