@@ -3,12 +3,15 @@
 
 <head>
    <meta charset="UTF-8">
+   <!--<meta http-equiv="refresh" content="0;url=https://marcgr.github.io/obob">-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
    <meta http-equiv="pragma" content="no-cache">
    <meta http-equiv="expires" content="0">
    <title>Flashcard App</title>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
    <style>
       body {
          margin: 0;
@@ -52,8 +55,22 @@
       }
 
       .flashcard-content {
+		 position: relative;
          text-align: center;
       }
+	  
+	  #flag-icon {
+			position: absolute;
+			top: -17px; /* Adjust as needed */
+			right: -5px; /* Adjust as needed */
+			cursor: pointer;
+			font-size: 16px; /* Adjust size as needed */
+			color: #ccc; /* Default color */
+		}
+
+		#flag-icon.flagged {
+			color: #d00; /* Color when flagged */
+		}
 
       #question,
       #answer {
@@ -177,6 +194,15 @@
          <div class="sub-header">TOAD IN A BUN FOR THE WIN!</div>
       </div>
       <div id="filter-divs">
+		<div>
+			<label for="search-filter">Search:</label>
+			<input type="text" id="search-filter" placeholder="Search questions and answers...">
+		</div>
+		<div class="filter-options">
+			<input type="checkbox" id="show-flagged-only">
+			<label for="show-flagged-only">Flagged</label>
+		</div>
+
          <div>
             <!-- Filter options -->
             <label for="author-filter">Source:</label>
@@ -204,6 +230,7 @@
       <div class="scrollable-box">
          <div class="flashcard" id="flashcard">
             <div class="flashcard-content" id="flashcard-content">
+			<i id="flag-icon" class="fas fa-flag" onclick="toggleFlag(uniqueId)"></i>
                <p id="question"></p>
                <br>
                <hr>
@@ -215,12 +242,14 @@
                <p class="info"><span id="current-author">N/A</span></p>
                <p class="info">:: <span id="current-question-type">N/A</span></p>
             </div>
-         </div>
+         </div>	 
+
          <div class="button-container">
             <!-- Inside the button-container div -->
             <button id="prev-button">Previous</button>
             <button id="show-answer" style="display: none;">Show Answer</button>
             <button id="next-button" style="display: none;">Next</button>
+			
          </div>
       </div>
    </div>
